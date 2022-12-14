@@ -1,6 +1,6 @@
 body 
 {
-   background-color: #ADD8E6;
+   background-color: #E0FFFF;
    background-size: cover;
    font-smoothing: antialiased;
    text-align: center;
@@ -83,7 +83,7 @@ body
 
 a:visited 
 {
-   color: #1a493b;
+   color: #800080;
 }
 
 img 
