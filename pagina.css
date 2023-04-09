@@ -1,0 +1,241 @@
+body {
+
+	font-family: arial, helvetica;
+
+	font-size: 1em;
+
+	margin-left: 10%;
+
+        padding:0px;
+
+        margin-top: 0%;
+
+        margin-bottom: 0%;
+
+}
+
+
+
+hr {
+
+	color: #fff;
+
+}
+
+
+
+h1 { color: black; }
+
+
+
+h2 {
+
+/*	font-family: serif; */
+
+	font-size: 200%;
+
+	font-style: normal;
+
+	font-weight: bold;
+
+	color: black;
+
+}
+
+
+
+h4 { 
+
+	margin-bottom: 0px;
+
+	margin-top: 10px;
+
+	color: black;
+
+}
+
+
+
+h3 { color: black }
+
+
+
+em {
+
+	color: black;
+
+}
+
+
+
+#contact {
+
+	font-size: 90%;
+
+	color: #444;
+
+}
+
+
+
+#picture {
+
+	width: 255px;
+
+	float: left;
+
+	padding: 10px 15px 5px 10px
+
+}
+
+
+
+#description {
+
+	clear: left;
+
+}
+
+
+
+a {
+
+	text-decoration: none;
+
+	color: #33f;
+
+}
+
+
+
+art_name {
+
+	text-decoration: none;
+
+	font-style: italic;
+
+}
+
+
+
+abs_button {
+
+/*	border: 1px solid #000; */
+
+	color: #33f;
+
+}
+
+
+
+art_detail {
+
+	font-size:80%;
+
+}
+
+
+
+citation {
+
+	font-style: italic;
+
+}
+
+
+
+#homepage{
+
+	width: 850px;
+
+	margin-top: 0px;
+
+	padding: 20px;
+
+	color: black;
+
+background: #fff;
+
+
+
+}
+
+
+
+#teaching{
+
+	width: 680px;
+
+	margin-top: 0px;
+
+	padding: 20px;
+
+	border: 2px solid #ccd;
+
+	background: #336600;
+
+	color: #E0E0E0;
+
+}
+
+
+
+abstract {
+
+	font-size: 85%;
+
+	color: #444;
+
+}
+
+
+
+table.syllabus{
+
+	text-align: center;
+
+font-weight: normal;
+
+font-size: 90%;
+
+color: #fff;
+
+background-color: #666;
+
+border: 0px;
+
+border-collapse: collapse;
+
+border-spacing: 0px;
+
+}
+
+
+
+table.syllabus td
+
+{background-color: #CCC;
+
+color: #000;
+
+padding: 4px;
+
+text-align: left;
+
+border: 1px #fff solid;}
+
+
+
+table.syllabus td.hed
+
+{background-color: #666;
+
+color: #fff;
+
+padding: 4px;
+
+text-align: left;
+
+border-bottom: 2px #fff solid;
+
+font-weight: bold;} 
