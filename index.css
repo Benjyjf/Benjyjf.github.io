@@ -74,7 +74,7 @@ body
 #name
 {
    line-height: 1.6;
-   color: blue;
+   color: black;
    margin-top 2%;
    position: center;
    font-family: "Times New Roman", Times, serif;
@@ -83,7 +83,8 @@ body
 
 a:visited 
 {
-   color: #800080;
+   
+   : #800080;
 }
 
 img 
