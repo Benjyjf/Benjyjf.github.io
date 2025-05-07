@@ -1,4 +1,4 @@
 Host: www
 Type: CNAME
 Value: benjyjf.github.io.
-TTL: “Auto” or 1 hr
+TTL: 7200
