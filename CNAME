@@ -1,4 +1,1 @@
-Host: www
-Type: CNAME
-Value: benjyjf.github.io.
-TTL: 7200
+benjyjf.com
