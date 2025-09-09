@@ -7,8 +7,21 @@
   <!-- Reuse the site stylesheet so this page matches your homepage -->
   <link rel="stylesheet" href="/index.css" />
   <meta name="description" content="Weekly schedule and bibliography for the Geometric Analysis Reading Group." />
+  <style>
+    /* Centered content column */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+
+    /* Force bibliography to be left-aligned even if global styles center text */
+    #bibliography, #bibliography ol, #bibliography li { text-align: left !important; }
+
+    /* Schedule table with full grid borders */
+    #schedule table { width: 100%; border-collapse: collapse; }
+    #schedule th, #schedule td { border: 1px solid #ccc; padding: 0.5rem; vertical-align: top; }
+    #schedule thead th { background: #f8f8f8; }
+  </style>
 </head>
 <body>
+  <div class="container">
   <header class="site-header" style="margin: 2rem 0 1rem;">
     <a href="/" style="text-decoration:none">← Home</a>
     <h1 style="margin: 0.4rem 0 0.2rem;">Geometric Analysis Reading Group</h1>
@@ -82,5 +95,6 @@
 
 
   </main>
+  </div>
 </body>
 </html>
