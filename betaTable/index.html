@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supersolution Verification - Capillary Problem</title>
+    <link rel="stylesheet" href="supersolution_styles.css">
+</head>
+<body bgcolor="#F0F8FF">
+    <div id="homepage">
+        <!-- Header Section -->
+        <div style="text-align: center; padding: 30px 0 20px 0;">
+            <h1 style="margin-bottom: 10px;">Supersolution Verification for the Capillary Problem</h1>
+            <p style="color: #444; font-size: 1.1em;">
+                Complete verification of 4,821 cases for <i>n</i>=7 to <i>n</i>=100
+            </p>
+        </div>
+
+        <hr style="border: 1px solid #CCC; margin: 20px 0;">
+
+        <!-- Summary Section -->
+        <div style="margin: 30px 0;">
+            <h2>Overview</h2>
+            <p>
+                This page provides complete verification results for the supersolution construction
+                in the capillary problem. All 4,821 cases for <i>n</i>=7 to <i>n</i>=100,
+                <i>k</i>=1 to <i>n</i>-2 have been rigorously verified using adaptive precision arithmetic
+                and convergence-based sampling.
+            </p>
+
+            <div class="summary-box" style="background-color: #E8F4E8;">
+                <h3>Mathematical Conditions Verified</h3>
+                <p>For each (<i>n</i>, <i>k</i>, <i>β</i>) triple, five conditions are satisfied with rigorous sign certainty:</p>
+                <ol>
+                    <li><strong>r̄ - A < 0</strong> (critical geometric constraint)</li>
+                    <li><strong>P(ξ) > 0</strong> for all ξ ∈ (0, 1]</li>
+                    <li><strong>Q̂(t) < 0</strong> for all <i>t</i> ∈ [0, <i>τ</i>)</li>
+                    <li><strong>K₀(ξ) < 0</strong> for all ξ ∈ (0, 1]</li>
+                    <li><strong>K₁(ξ) < 0</strong> for all ξ ∈ (0, 1]</li>
+                </ol>
+                <p style="margin-top: 10px; font-size: 0.95em;">
+                    <strong>Error Guarantees:</strong><br>
+                    • Numerical precision error < |value| / 10 (adaptive precision: 8-100 digits)<br>
+                    • Discretization error < |value| / 100 (convergence-based sampling)<br>
+                    • <strong>Total error < |value| / 9</strong>, ensuring definitive sign certainty
+                </p>
+            </div>
+        </div>
+
+        <hr style="border: 1px solid #CCC; margin: 30px 0;">
+
+        <!-- Verification Table Section -->
+        <div style="margin: 30px 0;">
+            <h2>Verified Beta Values</h2>
+            <p>
+                Browse the complete table of verified (<i>n</i>, <i>k</i>, <i>β</i>) values and verification results.
+            </p>
+
+            <!-- Filter Controls -->
+            <div class="filter-controls">
+                <label for="n-filter">Filter by <i>n</i>: </label>
+                <select id="n-filter" onchange="filterByN()">
+                    <option value="all">All values (n=7-100)</option>
+                    <option value="7-20">n = 7-20</option>
+                    <option value="21-40">n = 21-40</option>
+                    <option value="41-60">n = 41-60</option>
+                    <option value="61-80">n = 61-80</option>
+                    <option value="81-100">n = 81-100</option>
+                </select>
+
+                <span style="margin-left: 30px;">
+                    <label for="rows-per-page">Rows per page: </label>
+                    <select id="rows-per-page" onchange="changeRowsPerPage()">
+                        <option value="25">25</option>
+                        <option value="50" selected>50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                    </select>
+                </span>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <table id="beta-table" class="verification-table">
+                    <thead>
+                        <tr>
+                            <th><i>n</i></th>
+                            <th><i>k</i></th>
+                            <th><i>β</i></th>
+                            <th>max(<i>r̄</i> - <i>A</i>)</th>
+                            <th>max <i>Q̂</i></th>
+                            <th>max <i>K</i>₀</th>
+                            <th>max <i>K</i>₁</th>
+                            <th>min <i>P</i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Data loaded via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="pagination">
+                <button onclick="firstPage()" id="first-btn">« First</button>
+                <button onclick="previousPage()" id="prev-btn">‹ Previous</button>
+                <span id="page-info" style="margin: 0 20px; font-weight: bold;">Page 1</span>
+                <button onclick="nextPage()" id="next-btn">Next ›</button>
+                <button onclick="lastPage()" id="last-btn">Last »</button>
+                <span style="margin-left: 20px; color: #444;">
+                    <span id="showing-info"></span>
+                </span>
+            </div>
+        </div>
+
+        <hr style="border: 1px solid #CCC; margin: 30px 0;">
+
+        <!-- Download Section (CSV only) -->
+        <div style="margin: 30px 0;">
+            <h2>Download</h2>
+
+            <div class="download-section">
+                <div class="download-item">
+                    <h3>Complete Verification Results</h3>
+                    <p>
+                        Machine-readable CSV file with all 4,821 verification results.
+                    </p>
+                    <a href="VERIFIED_BETA_TABLE.csv" download class="download-button">
+                        Download CSV (916 KB)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 1px solid #CCC; margin: 30px 0;">
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 30px 0; color: #666; font-size: 0.9em;">
+            <p>
+                <a href="https://benjyjf.com" style="color: #33f; text-decoration: none;">Back to Homepage</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="supersolution_table.js"></script>
+</body>
+</html>
