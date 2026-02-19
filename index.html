@@ -1,236 +1,575 @@
 <!DOCTYPE html>
-<html><head>
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Benjy Firester</title>
-<link rel="stylesheet" type="text/css" href="pagina.css">
-</head>
-  <style>
-.container {
+<script>
+MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: #2d2d2d;
+  background: #eef2f7;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(176, 184, 200, 0.4);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 max(calc((100% - 980px) / 2 + 55px), 32px);
+}
+
+.topbar-name {
+  font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  font-size: 0.92em;
+  color: #1a365d;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.topbar-name.visible {
+  opacity: 1;
+}
+
+#homepage {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 86px 55px 40px;
+  background: #fff;
+  min-height: 100vh;
+}
+
+a {
+  color: #2b6cb0;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+a:hover {
+  color: #1a365d;
+  text-decoration: underline;
+}
+
+/* === Header === */
+.header {
+  display: flex;
+  gap: 38px;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+
+.header-info {
+  flex: 1;
+  padding-top: 2px;
   position: relative;
-  text-align: left;
-  color: black;
 }
 
-.bottom-left {
+.header-info::before {
+  content: '';
   position: absolute;
-  bottom: 8px;
-  left: 16px;
+  top: -10px;
+  left: -20px;
+  right: -10px;
+  bottom: -10px;
+  background: url('Boundary.jpg') center center no-repeat;
+  background-size: contain;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.top-left {
+.header-info > * {
+  position: relative;
+  z-index: 1;
+}
+
+.header-info h1 {
+  font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  font-size: 2.35em;
+  font-weight: normal;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+
+.header-photo {
+  flex: 0 0 370px;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+.header-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.bio-line {
+  margin-bottom: 2px;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.bio-detail {
+  font-size: 0.84em;
+  color: #666;
+  margin-bottom: 2px;
+  padding-left: 6px;
+}
+
+.contact-info {
+  margin-top: 16px;
+  font-size: 0.92em;
+  color: #444;
+}
+
+.contact-info p { margin-bottom: 2px; }
+
+.contact-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+/* === Sections === */
+h2 {
+  font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  font-size: 1.4em;
+  font-weight: normal;
+  color: #1a365d;
+  margin: 34px 0 16px 0;
+  padding-bottom: 7px;
+  border-bottom: 1.5px solid #b0b8c8;
+}
+
+/* === Research items (expandable) === */
+details.research-item {
+  margin-bottom: 12px;
+}
+
+details.research-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 5px 0 3px 22px;
+  position: relative;
+}
+
+details.research-item summary::-webkit-details-marker { display: none; }
+details.research-item summary::marker { display: none; content: ''; }
+
+details.research-item summary::before {
+  content: '▶';
   position: absolute;
+  left: 1px;
+  top: 10px;
+  font-size: 0.65em;
+  color: #555;
+  transition: transform 0.2s ease;
+}
+
+details.research-item[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.paper-title {
+  font-style: italic;
+  color: #1a1a2e;
+}
+
+.paper-meta {
+  display: block;
+  font-size: 0.83em;
+  color: #555;
+  margin-top: 2px;
+}
+
+.paper-abstract {
+  font-size: 0.95em;
+  color: #333;
+  margin: 0 0 0 22px;
+  padding: 16px 18px 14px 18px;
+  background: #f8fafb;
+  border-left: 3px solid #cbd5e0;
+  border-radius: 0 4px 4px 0;
+  line-height: 1.72;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
+}
+
+/* === Standard lists === */
+ul.item-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.item-list > li {
+  padding: 4px 0 4px 20px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+ul.item-list > li::before {
+  content: '•';
+  position: absolute;
+  left: 3px;
   top: 8px;
-  left: 16px;
+  color: #555;
+  font-size: 1.2em;
+  line-height: 1;
 }
 
-.top-right {
-  position: absolute;
-  top: 8px;
-  right: 16px;
+.item-detail {
+  font-size: 0.83em;
+  color: #555;
 }
 
-.bottom-right {
-  position: absolute;
-  bottom: 8px;
-  right: 16px;
-}
-
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 5px;
-}
-
-/* Clearfix (clear floats) */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
+/* === Responsive === */
+@media (max-width: 850px) {
+  #homepage { padding: 28px 24px; }
+  .header { flex-direction: column; gap: 20px; }
+  .header-photo { flex: none; width: 100%; max-width: 450px; height: 250px; }
 }
 </style>
-  
-<body bgcolor="#F0F8FF">
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-name">Benjy Firester</span>
+</div>
 <div id="homepage">
-  
-  
 
-<div class="row">
- 
-  <div class="column">
-    <div class="container">
-      <img src="Boundary.jpg" width = 450>
-      <div class="top-left">
-        <p>
-          <h2>Benjy Firester</h2><p>
-        </p>
-        <b>
-          Math PhD student at <a href = "https://math.mit.edu/" target="_blank" rel="noopener noreferrer"> MIT</a> advised by <a href = "https://math.mit.edu/directory/profile.html?pid=50" target="_blank" rel="noopener noreferrer">Toby Colding</a> and <a href = "https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">Tristan Collins</a><br>
-          [<art_detail> Levinson Fellow </art_detail>]<br>
-          AB/AM in Mathematics from <a href = "https://www.math.harvard.edu/" target="_blank" rel="noopener noreferrer"> Harvard</a> (2023 <i>Summa Cum Laude</i>)<br>
-          [<art_detail> Recipient of the <a href = "https://www.math.harvard.edu/undergraduate-prizes-and-awards-2022-2023/" target="_blank" rel="noopener noreferrer"> Mumford Prize and Friends Prize</a></art_detail> ]<br>
-          Email: benjyfir at mit dot edu<br>
-          <b>arXiv</b>: <a href = "https://arxiv.org/a/firester_b_1.html" target="_blank" rel="noopener noreferrer">firester_b_1</a><br>
-          <b>ORCID</b>: <a href = "https://orcid.org/0000-0001-5841-8264" target="_blank" rel="noopener noreferrer">0000-0001-5841-8264</a><br>
-          <a href = "https://scholar.google.com/citations?hl=en&user=qKbndfgAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer">Google scholar</a><br>
-        </b>
+<!-- Header -->
+<div class="header">
+  <div class="header-info">
+    <h1>Benjy Firester</h1>
+    <p class="bio-line" style="white-space: nowrap">
+      Math PhD student at <a href="https://math.mit.edu/" target="_blank" rel="noopener noreferrer">MIT</a> advised by <a href="https://math.mit.edu/directory/profile.html?pid=50" target="_blank" rel="noopener noreferrer">Toby Colding</a> and <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">Tristan Collins</a>
+    </p>
+    <p class="bio-detail">Levinson Fellow</p>
+    <p class="bio-line">
+      AB/AM in Mathematics from <a href="https://www.math.harvard.edu/" target="_blank" rel="noopener noreferrer">Harvard</a> (2023 <em>Summa Cum Laude</em>)
+    </p>
+    <p class="bio-detail">
+      Recipient of the <a href="https://www.math.harvard.edu/undergraduate-prizes-and-awards-2022-2023/" target="_blank" rel="noopener noreferrer">Mumford Prize and Friends Prize</a>
+    </p>
+    <div class="contact-info">
+      <p>Email: benjyfir at mit dot edu</p>
+      <div class="contact-links">
+        <a href="https://arxiv.org/a/firester_b_1.html" target="_blank" rel="noopener noreferrer"><b>arXiv</b></a>
+        <a href="https://orcid.org/0000-0001-5841-8264" target="_blank" rel="noopener noreferrer"><b>ORCID</b></a>
+        <a href="https://scholar.google.com/citations?hl=en&user=qKbndfgAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer"><b>Google Scholar</b></a>
       </div>
-
     </div>
   </div>
-  <div class="column">
-    <img src="Stanford Talk High REs.jpeg" alt="Benjy Firester" width=570>
+  <div class="header-photo">
+    <img src="Stanford Talk High REs.jpeg" alt="Benjy Firester presenting at Stanford">
   </div>
 </div>
-  <!--
-<div class="container">
-  <img src="Boundary.jpg" width=450>
-  <div class="top-left">
-    <p>
-      <h2>Benjy Firester</h2><p>
-    </p>
-    Math PhD student at <a href = "https://math.mit.edu/"> MIT</a> advised by <a href = "https://math.mit.edu/directory/profile.html?pid=50">Toby Colding</a> and <a href = "https://math.mit.edu/~tristanc/homepage.html">Tristan Collins</a><br>
-    [<art_detail> Levinson Fellow </art_detail>]<br>
-    AB/AM in Mathematics from <a href = "https://www.math.harvard.edu/"> Harvard</a> (2023 <i>Summa Cum Laude</i>)<br>
-    [<art_detail> Recipient of the <a href = "https://www.math.harvard.edu/undergraduate-prizes-and-awards-2022-2023/"> Mumford Prize and Friends Prize</a></art_detail> ]<br>
-    Email: benjyfir at mit dot edu<br>
-  </div>
 
-</div>
-<div class = "container"><img src="Stanford Talk High REs.jpeg" alt="Benjy Firester" width=387></div>
-    -->
-</p><p>
-<hr>
-<h3> Geometric Analysis Reading Seminar </h3></p><p>
-  <ul>
-    <li> <a href="/GeometricAnalysisReadingGroup/"> Fall 2025 </a>
-  </ul>
-<p>
-</p><hr>
-<h3> Research </h3></p><p>
-<ul>
-  <li><i> Area-minimizing capillary cones </i>(with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a> and Y. Wang)<br>
-    <art_detail>[<a href="https://arxiv.org/abs/2601.18794" target="_blank" rel="noopener noreferrer"> arXiv </a>]   <br><br>
-  <li><i> Stability inequalities for one-phase cones </i>(with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a> and Y. Wang)<br>
-    <art_detail>[<a href="https://arxiv.org/abs/2601.16966" target="_blank" rel="noopener noreferrer"> arXiv </a>]   <br><br>
-  <li><i> Homogeneous optimal transport maps between oblique cones </i>(with <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">T. C. Collins</a> and <a href="https://sites.google.com/view/freidtong/home/" target="_blank" rel="noopener noreferrer">F. Tong</a>)<br>
-    <art_detail>[<a href="https://arxiv.org/abs/2511.01692" target="_blank" rel="noopener noreferrer"> arXiv </a>] </art_detail>  <br><br>
-  <li><i> On a general class of free boundary Monge-Ampère equations </i>(with <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">T. C. Collins</a>)<br>
-    <art_detail>[<a href="https://arxiv.org/abs/2508.05551" target="_blank" rel="noopener noreferrer"> arXiv </a>] </art_detail>  <br><br>
-  <li><i> Uniqueness of cylindrical tangent cones <span style="font-family: 'Cambria Math', 'Asana Math', serif; font-style: italic;">C<sub>p,q</sub> &times; &#x211D;</span> </i>(with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a> and Y. Wang)<br>
-    <art_detail>[<a href="https://arxiv.org/abs/2507.22373" target="_blank" rel="noopener noreferrer"> arXiv </a>] To appear in <b>Calc. Var. & PDE</b> </art_detail>  <br><br>
-  <li><i> Cohomogeneity two Ricci solitons with sub-Euclidean volume </i>(with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a>)<br>
-    <art_detail>[<a href="https://arxiv.org/abs/2408.13982" target="_blank" rel="noopener noreferrer"> arXiv </a>] [<a href="https://link.springer.com/article/10.1007/s12220-025-02232-9" target="_blank" rel="noopener noreferrer"> Journal </a>] </art_detail><art_detail><b> J. Geom. Anal.</b> 35, 407 (2025).</art_detail><br><br>
-  <li><i> Complete Calabi-Yau metrics from smoothing Calabi-Yau complete intersections</i><br>
-    <art_detail>[<a href="https://arxiv.org/abs/2208.04279" target="_blank" rel="noopener noreferrer"> arXiv </a>] [<a href="https://link.springer.com/article/10.1007/s10711-024-00886-3" target="_blank" rel="noopener noreferrer"> Journal </a>] <b>Geom. Dedicata</b> (2024) 218:46  </art_detail>  <br><br>
-   <li> <i> Impact Hamiltonian systems and polygonal billiards</i> (with L. Becker, S. Elliott, S. Gonen Cohen, M. Pnueli, <a href="https://www.wisdom.weizmann.ac.il/~vered/" target="_blank" rel="noopener noreferrer">V. Rom-Kedar</a>) <br>
-     <art_detail>[<a href="https://arxiv.org/abs/2001.03726" target="_blank" rel="noopener noreferrer"> arXiv </a>] [<a href="https://www.cambridge.org/core/books/abs/hamiltonian-systems/impact-hamiltonian-systems-and-polygonal-billiards/E06AACE092456099F24686CD8EF682C2" target="_blank" rel="noopener noreferrer"> Journal </a>] <b>Hamiltonian Systems: Dynamics, Analysis, Applications.</b> Mathematical Sciences Research Institute Publications. Cambridge University Press; 2024:29-66. </art_detail> <br><br>
+<!-- Research -->
+<h2>Research</h2>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Area-minimizing capillary cones</span>
+    (with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a> and Y. Wang)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2601.18794" target="_blank" rel="noopener noreferrer">arXiv</a>]</span>
+  </summary>
+  <div class="paper-abstract">
+    We construct non-flat minimal capillary cones with bi-orthogonal symmetry groups for any dimension and contact angle. These cones interpolate between rescalings of a singular solution to the one-phase problem and the free-boundary cone obtained by halving a Lawson cone along a hyperplane of symmetry. The existence and uniqueness of such cones is proved by solving a nonlinear free boundary equation parametrized by the contact angle and obtaining monotonicity properties for the solutions. The constructed cones are minimizing in ambient dimension 8 or higher, for appropriate contact angles, demonstrating that the regularity theory for minimizing capillary hypersurfaces can have singularities in codimension 7 and completing the capillary regularity theory for contact angles near \(\pi/2\). We further develop the connection between capillary hypersurfaces and solutions of the one-phase problem, consequently producing new examples of singular minimizing free boundaries for the Alt&ndash;Caffarelli functional.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Stability inequalities for one-phase cones</span>
+    (with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a> and Y. Wang)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2601.16966" target="_blank" rel="noopener noreferrer">arXiv</a>]</span>
+  </summary>
+  <div class="paper-abstract">
+    We obtain strict stability inequalities for homogeneous solutions of the one-phase Bernoulli problem. We prove that in dimension 7 and above, cohomogeneity one solutions with bi-orthogonal symmetry are strictly stable. As a consequence, we obtain a bound on the first eigenvalue and the decay rates of Jacobi fields, with applications to the generic regularity of the one-phase problem.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Homogeneous optimal transport maps between oblique cones</span>
+    (with <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">T. C. Collins</a> and <a href="https://sites.google.com/view/freidtong/home/" target="_blank" rel="noopener noreferrer">F. Tong</a>)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2511.01692" target="_blank" rel="noopener noreferrer">arXiv</a>]</span>
+  </summary>
+  <div class="paper-abstract">
+    We construct homogeneous optimal transport maps for the quadratic cost between convex cones with homogeneous, possibly degenerate, densities when the cones satisfy an obliqueness condition. The existence of such maps plays a central role in the boundary regularity theory for optimal transport maps between convex domains. Our results are also relevant for the existence of complete Calabi&ndash;Yau metrics on certain quasi-projective varieties.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">On a general class of free boundary Monge&ndash;Amp&egrave;re equations</span>
+    (with <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">T. C. Collins</a>)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2508.05551" target="_blank" rel="noopener noreferrer">arXiv</a>]</span>
+  </summary>
+  <div class="paper-abstract">
+    We solve a general class of free boundary Monge&ndash;Amp&egrave;re equations given by \(\det D^2 u = \lambda \frac{f(-u)}{g(u^\star)\, h(\nabla u)} \chi_{\{u &lt; 0\}}\) in \(\mathbb{R}^n\), with \(\nabla u(\mathbb{R}^n) = P\) where \(P\) is a bounded convex set containing the origin, and \(h &gt; 0\) on \(P\). Applications include optimal transport with degenerate densities, Monge&ndash;Amp&egrave;re eigenvalue problems, and geometric problems including a hemispherical Minkowski problem and free boundary K&auml;hler&ndash;Ricci solitons on toric Fano manifolds.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Uniqueness of cylindrical tangent cones \(C_{p,q} \times \mathbb{R}\)</span>
+    (with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a> and Y. Wang)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2507.22373" target="_blank" rel="noopener noreferrer">arXiv</a>] To appear in <b>Calc. Var. &amp; PDE</b></span>
+  </summary>
+  <div class="paper-abstract">
+    We show the uniqueness of the cylindrical tangent cone \(C(\mathbb{S}^2 \times \mathbb{S}^4) \times \mathbb{R}\) for area-minimizing hypersurfaces in \(\mathbb{R}^9\), completing the uniqueness of all tangent cones of the form \(C_{p,q} \times \mathbb{R}\) proved by Simon for dimensions at least 10 and Sz&eacute;kelyhidi for the Simons cone.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Cohomogeneity two Ricci solitons with sub-Euclidean volume</span>
+    (with <a href="https://www.sites.google.com/view/rtsiamis" target="_blank" rel="noopener noreferrer">R. Tsiamis</a>)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2408.13982" target="_blank" rel="noopener noreferrer">arXiv</a>] [<a href="https://link.springer.com/article/10.1007/s12220-025-02232-9" target="_blank" rel="noopener noreferrer">Journal</a>] <b>J. Geom. Anal.</b> 35, 407 (2025).</span>
+  </summary>
+  <div class="paper-abstract">
+    We introduce new families of four-dimensional Ricci solitons of cohomogeneity two with volume collapsing ends. In a local presentation of the metric conformal to a product, we reduce the soliton equation to a degenerate Monge&ndash;Amp&egrave;re equation for the conformal factor coupled with ODEs. We obtain explicit complete expanding solitons as well as abstract existence results for shrinking and steady solitons with boundary. These families of Ricci solitons specialize to classical examples of Einstein and soliton metrics. We also classify local solutions of this Monge&ndash;Amp&egrave;re equation to prove rigidity for these solitons.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Complete Calabi&ndash;Yau metrics from smoothing Calabi&ndash;Yau complete intersections</span>
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2208.04279" target="_blank" rel="noopener noreferrer">arXiv</a>] [<a href="https://link.springer.com/article/10.1007/s10711-024-00886-3" target="_blank" rel="noopener noreferrer">Journal</a>] <b>Geom. Dedicata</b> (2024) 218:46</span>
+  </summary>
+  <div class="paper-abstract">
+    We construct complete Calabi&ndash;Yau metrics on non-compact manifolds that are smoothings of an initial complete intersection \(V_0\) that is a Calabi&ndash;Yau cone, extending the work of Sz&eacute;kelyhidi (2019). The constructed Calabi&ndash;Yau manifold has tangent cone at infinity given by \(\mathbb{C} \times V_0\). This construction produces Calabi&ndash;Yau metrics with fibers having varying complex structures and possibly isolated singularities.
+  </div>
+</details>
+
+<details class="research-item">
+  <summary>
+    <span class="paper-title">Impact Hamiltonian systems and polygonal billiards</span>
+    (with L. Becker, S. Elliott, S. Gonen Cohen, M. Pnueli, <a href="https://www.wisdom.weizmann.ac.il/~vered/" target="_blank" rel="noopener noreferrer">V. Rom-Kedar</a>)
+    <span class="paper-meta">[<a href="https://arxiv.org/abs/2001.03726" target="_blank" rel="noopener noreferrer">arXiv</a>] [<a href="https://www.cambridge.org/core/books/abs/hamiltonian-systems/impact-hamiltonian-systems-and-polygonal-billiards/E06AACE092456099F24686CD8EF682C2" target="_blank" rel="noopener noreferrer">Journal</a>] <b>Hamiltonian Systems: Dynamics, Analysis, Applications.</b> Mathematical Sciences Research Institute Publications. Cambridge University Press; 2024:29&ndash;66.</span>
+  </summary>
+  <div class="paper-abstract">
+    The dynamics of a beam held on a horizontal frame by springs and bouncing off a step is described by a separable two degrees of freedom Hamiltonian system with impacts that respect, point wise, the separability symmetry. The energy in each degree of freedom is preserved, and the motion along each level set is conjugated, via action angle coordinates, to a geodesic flow on a flat two-dimensional surface in the four dimensional phase space. Yet, for a range of energies, these surfaces are not the simple Liouville&ndash;Arnold tori&mdash;these are tori of genus two, thus the motion on them is not conjugated to simple rotations. Namely, even though energy is not transferred between the two degrees of freedom, the impact system is quasi-integrable and is not of the Liouville&ndash;Arnold type. In fact, for each level set in this range, the motion is conjugated to the well studied and highly non-trivial dynamics of directional motion in L-shaped billiards, where the billiard area and shape as well as the direction of motion vary continuously on iso-energetic level sets.
+  </div>
+</details>
+
+<!-- Expository -->
+<h2>Expository</h2>
+<ul class="item-list">
+  <li>
+    Senior Thesis: <em>Mostow Rigidity and Hyperbolic 3-Manifolds</em> (advised by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a>)<br>
+    <span class="item-detail">
+      Recipient of the <a href="https://prizes.fas.harvard.edu/sites/projects.iq.harvard.edu/files/prize-office/files/hoopes_prize_winners_2022-2023.pdf" target="_blank" rel="noopener noreferrer">Hoopes Prize</a> and the <a href="https://www.math.harvard.edu/event/special-lecture-when-do-varieties-map-to-each-other-2/" target="_blank" rel="noopener noreferrer">Friends Prize</a><br>
+      [<a href="thesis.pdf" target="_blank" rel="noopener noreferrer">PDF</a>]
+    </span>
+  </li>
 </ul>
-<p>
-</p><hr>
-<h3> Expository </h3></p><p>
-<ul>
-  <li> Senior Thesis: <i>Mostow Rigidity and Hyperbolic 3-Manifolds </i>(advised by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a>)<br>
-    Recipient of the <a href = "https://prizes.fas.harvard.edu/sites/projects.iq.harvard.edu/files/prize-office/files/hoopes_prize_winners_2022-2023.pdf" target="_blank" rel="noopener noreferrer">Hoopes Prize</a> and the <a href = "https://www.math.harvard.edu/event/special-lecture-when-do-varieties-map-to-each-other-2/" target="_blank" rel="noopener noreferrer"> Friends Prize </a><br> 
-  <art_detail>[<a href = "thesis.pdf" target="_blank" rel="noopener noreferrer"> PDF </a>]</art_detail> <br><br>
+
+<!-- Geometric Analysis Reading Seminar -->
+<h2>Geometric Analysis Reading Seminar</h2>
+<ul class="item-list">
+  <li><a href="/GeometricAnalysisReadingGroup/">Fall 2025</a></li>
 </ul>
-<p>
-</p><hr>
-<h3> Presentations </h3></p><p>
-<ul>
-  <li>NYU Courant Geometric Analysis & Topology Seminar <br>
-    <art_detail>[ <a href = "https://math.nyu.edu/dynamic/calendars/seminars/geometric-analysis-and-topology-seminar/4338/"  target="_blank" rel="noopener noreferrer"> December 5, 2025 </a>] <br><br>
- <li>University of Maryland Informal Geometric Analysis Seminar <br>
-    <art_detail>[ <a href = "https://yaxiongliu23.github.io/IGA_Seminar(2025--2026).html"  target="_blank" rel="noopener noreferrer"> November 18, 2025 </a>] <br><br>
- <li>Columbia University Geometric Analysis Seminar <br>
-    <art_detail>[ November 9, 2025 </a>] <br><br> 
-  <li>University of Copenhagen (GeoTop) Workshop on Geometry and PDEs <br>
-    <art_detail>[<a href = "https://www.math.ku.dk/english/calendar/events/workshop_on_geometry_and_pdes_sep_2025/" target="_blank" rel="noopener noreferrer"> September 25, 2025 </a>] <br><br>
-  <li>Brown University Workshop on Topics in Differential Geometry <br>
-    <art_detail>[<a href = "https://sites.google.com/brown.edu/christine-breiner-brown/workshop-2025" target="_blank" rel="noopener noreferrer"> June 11, 2025 </a>] <br><br>
+
+<!-- Presentations -->
+<h2>Presentations</h2>
+<ul class="item-list">
+  <li>NYU Courant Geometric Analysis &amp; Topology Seminar<br>
+    <span class="item-detail">[<a href="https://math.nyu.edu/dynamic/calendars/seminars/geometric-analysis-and-topology-seminar/4338/" target="_blank" rel="noopener noreferrer">December 5, 2025</a>]</span></li>
+  <li>University of Maryland Informal Geometric Analysis Seminar<br>
+    <span class="item-detail">[<a href="https://yaxiongliu23.github.io/IGA_Seminar(2025--2026).html" target="_blank" rel="noopener noreferrer">November 18, 2025</a>]</span></li>
+  <li>Columbia University Geometric Analysis Seminar<br>
+    <span class="item-detail">[November 9, 2025]</span></li>
+  <li>University of Copenhagen (GeoTop) Workshop on Geometry and PDEs<br>
+    <span class="item-detail">[<a href="https://www.math.ku.dk/english/calendar/events/workshop_on_geometry_and_pdes_sep_2025/" target="_blank" rel="noopener noreferrer">September 25, 2025</a>]</span></li>
+  <li>Brown University Workshop on Topics in Differential Geometry<br>
+    <span class="item-detail">[<a href="https://sites.google.com/brown.edu/christine-breiner-brown/workshop-2025" target="_blank" rel="noopener noreferrer">June 11, 2025</a>]</span></li>
   <li>MIT Pure Math Graduate Student Seminar (PUMAGRASS)<br>
-    <art_detail>[<a href = "https://math.mit.edu/pumagrass/" target="_blank" rel="noopener noreferrer"> May 2, 2025 </a>] <br><br>
+    <span class="item-detail">[<a href="https://math.mit.edu/pumagrass/" target="_blank" rel="noopener noreferrer">May 2, 2025</a>]</span></li>
   <li>Rutgers Geometric Analysis Seminar<br>
-    <art_detail>[<a href = "https://www.math.rutgers.edu/news-events/list-all-events/icalrepeat.detail/2025/04/22/22950/-/free-boundary-monge-ampere-and-optimal-transport-equations" target="_blank" rel="noopener noreferrer"> April 22, 2025 </a>] <br><br>
-  <li>AMS New England Grad Student Conference (PDE) at Brown University <br>
-    <art_detail>[<a href = "https://sites.google.com/brown.edu/amsgradconference/talks" target="_blank" rel="noopener noreferrer"> April 19, 2025 </a>] <br><br>
-  <li>Sapienza Università di Roma Calculus of Variations and PDE's in Geometric Analysis <br>
-    <art_detail>[<a href = "https://sites.google.com/uniroma1.it/cvga2025/home?authuser=0" target="_blank" rel="noopener noreferrer"> January 22, 2025 </a>] <br><br>
-  <li>Hebrew University in Jerusalem Geometry and Topology Seminar <br>
-    <art_detail>[<a href = "https://mathematics.huji.ac.il/event/benji-firester-mit-cohomogeneity-two-ricci-solitons-sub-euclidean-volume?ref_tid=3839" target="_blank" rel="noopener noreferrer"> January 16, 2025 </a>] <br><br>
-  <li>Technion University PDE and Applied Mathematics Seminar <br>
-    <art_detail>[ January 14, 2025 ] <br><br>
-  <li>University of Granada Seminario de geometría <br>
-    <art_detail>[<a href = "https://wpd.ugr.es/~imag/events/event/collapsing-cohomogeneity-two-ricci-solitons/" target="_blank" rel="noopener noreferrer"> July 8, 2024 </a>] <br><br>
-  <li>Harvard Special Lecture for Friends Prize Recipient <br>
-    <art_detail>[<a href = "https://www.math.harvard.edu/?s=benjy+firester" target="_blank" rel="noopener noreferrer"> April 28, 2023 </a>] <br><br>
+    <span class="item-detail">[<a href="https://www.math.rutgers.edu/news-events/list-all-events/icalrepeat.detail/2025/04/22/22950/-/free-boundary-monge-ampere-and-optimal-transport-equations" target="_blank" rel="noopener noreferrer">April 22, 2025</a>]</span></li>
+  <li>AMS New England Grad Student Conference (PDE) at Brown University<br>
+    <span class="item-detail">[<a href="https://sites.google.com/brown.edu/amsgradconference/talks" target="_blank" rel="noopener noreferrer">April 19, 2025</a>]</span></li>
+  <li>Sapienza Universit&agrave; di Roma Calculus of Variations and PDE's in Geometric Analysis<br>
+    <span class="item-detail">[<a href="https://sites.google.com/uniroma1.it/cvga2025/home?authuser=0" target="_blank" rel="noopener noreferrer">January 22, 2025</a>]</span></li>
+  <li>Hebrew University in Jerusalem Geometry and Topology Seminar<br>
+    <span class="item-detail">[<a href="https://mathematics.huji.ac.il/event/benji-firester-mit-cohomogeneity-two-ricci-solitons-sub-euclidean-volume?ref_tid=3839" target="_blank" rel="noopener noreferrer">January 16, 2025</a>]</span></li>
+  <li>Technion University PDE and Applied Mathematics Seminar<br>
+    <span class="item-detail">[January 14, 2025]</span></li>
+  <li>University of Granada Seminario de geometr&iacute;a<br>
+    <span class="item-detail">[<a href="https://wpd.ugr.es/~imag/events/event/collapsing-cohomogeneity-two-ricci-solitons/" target="_blank" rel="noopener noreferrer">July 8, 2024</a>]</span></li>
+  <li>Harvard Special Lecture for Friends Prize Recipient<br>
+    <span class="item-detail">[<a href="https://www.math.harvard.edu/?s=benjy+firester" target="_blank" rel="noopener noreferrer">April 28, 2023</a>]</span></li>
   <li>Harvard Math Table<br>
-    <art_detail>[<a href="https://sites.google.com/g.harvard.edu/mathtable#h.h2b0s8v6gph4" target="_blank" rel="noopener noreferrer"> March 29, 2023 </a>] <br><br>
+    <span class="item-detail">[<a href="https://sites.google.com/g.harvard.edu/mathtable#h.h2b0s8v6gph4" target="_blank" rel="noopener noreferrer">March 29, 2023</a>]</span></li>
   <li>Stanford Special Geometry Seminar<br>
-    <art_detail>[<a href="https://mathematics.stanford.edu/events/special-geometry-seminar-complete-calabi-yau-metrics-smoothing-calabi-yau-complete-0" target="_blank" rel="noopener noreferrer"> February 23, 2023 </a>] <br><br>
+    <span class="item-detail">[<a href="https://mathematics.stanford.edu/events/special-geometry-seminar-complete-calabi-yau-metrics-smoothing-calabi-yau-complete-0" target="_blank" rel="noopener noreferrer">February 23, 2023</a>]</span></li>
   <li>Joint Mathematics Meeting 2023: AMS Contributed Paper Session in Geometry<br>
-    <art_detail>[<a href="https://meetings.ams.org/math/jmm2023/meetingapp.cgi/Paper/19585" target="_blank" rel="noopener noreferrer"> January 5, 2023 </a>] <br><br>
-  <li>RTG Partial Differential Equations on Manifolds: Undergraduate Analysis and PDE Seminar (with  <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer"> T. C. Collins</a>)<br>
-    <art_detail>[<a href="https://tarheels.live/waves/activities/undergraduate-online-seminar-fall-2022/" target="_blank" rel="noopener noreferrer"> November 18, 2022 </a>] <br><br>
+    <span class="item-detail">[<a href="https://meetings.ams.org/math/jmm2023/meetingapp.cgi/Paper/19585" target="_blank" rel="noopener noreferrer">January 5, 2023</a>]</span></li>
+  <li>RTG Partial Differential Equations on Manifolds: Undergraduate Analysis and PDE Seminar (with <a href="https://www.math.utoronto.ca/tristanc/homepage.html" target="_blank" rel="noopener noreferrer">T. C. Collins</a>)<br>
+    <span class="item-detail">[<a href="https://tarheels.live/waves/activities/undergraduate-online-seminar-fall-2022/" target="_blank" rel="noopener noreferrer">November 18, 2022</a>]</span></li>
 </ul>
-<p>
-</p><hr>
-<h3> Teaching </h3></p><p>
-<ul>
-  <li> Harvard Math 123: Algebra II (Rings, Fields, Galois theory) taught by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a><br>
-    <art_detail> [ Spring 2023 Course Assistant ] </art_detail><br><br>
-  <li> Harvard Math 101: Sets, Groups, and Knots taught by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a><br>
-    <art_detail> [ Fall 2022 Course Assistant ] </art_detail><br><br>
-  <li> Harvard Math 123: Algebra II (Rings, Fields, Galois theory) taught by <a href="https://people.math.harvard.edu/~kisin/" target="_blank" rel="noopener noreferrer">Mark Kisin</a><br>
-    <art_detail> [ Spring 2022 Course Assistant ] </art_detail><br><br>
-  <li> Harvard Math 114: Measure, Integration, Banach Spaces, Duality, and Fourier analysis taught by <a href="https://people.mpim-bonn.mpg.de/gaitsgde/index.html" target="_blank" rel="noopener noreferrer">Dennis Gaitsgory</a><br>
-    <art_detail> [ Fall 2021 Course Assistant ] </art_detail><br><br>
-  <li> Harvard Math 55b: Topology and Real/Complex analysis taught by <a href="https://www.math.harvard.edu/people/harris-joe/" target="_blank" rel="noopener noreferrer">Joe Harris</a><br>
-    <art_detail> [ Spring 2020 Course Assistant ] </art_detail><br><br>
-  <li> Harvard Math 55a: Algebra (Group theory, linear algebra, representation theory) taught by <a href="https://www.math.harvard.edu/people/harris-joe/" target="_blank" rel="noopener noreferrer">Joe Harris</a><br>
-    <art_detail> [ Fall 2019 Course Assistant ] </art_detail><br><br>
+
+<!-- Teaching -->
+<h2>Teaching</h2>
+<ul class="item-list">
+  <li>Harvard Math 123: Algebra II (Rings, Fields, Galois theory) taught by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a><br>
+    <span class="item-detail">Spring 2023 Course Assistant</span></li>
+  <li>Harvard Math 101: Sets, Groups, and Knots taught by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a><br>
+    <span class="item-detail">Fall 2022 Course Assistant</span></li>
+  <li>Harvard Math 123: Algebra II (Rings, Fields, Galois theory) taught by <a href="https://people.math.harvard.edu/~kisin/" target="_blank" rel="noopener noreferrer">Mark Kisin</a><br>
+    <span class="item-detail">Spring 2022 Course Assistant</span></li>
+  <li>Harvard Math 114: Measure, Integration, Banach Spaces, Duality, and Fourier analysis taught by <a href="https://people.mpim-bonn.mpg.de/gaitsgde/index.html" target="_blank" rel="noopener noreferrer">Dennis Gaitsgory</a><br>
+    <span class="item-detail">Fall 2021 Course Assistant</span></li>
+  <li>Harvard Math 55b: Topology and Real/Complex analysis taught by <a href="https://www.math.harvard.edu/people/harris-joe/" target="_blank" rel="noopener noreferrer">Joe Harris</a><br>
+    <span class="item-detail">Spring 2020 Course Assistant</span></li>
+  <li>Harvard Math 55a: Algebra (Group theory, linear algebra, representation theory) taught by <a href="https://www.math.harvard.edu/people/harris-joe/" target="_blank" rel="noopener noreferrer">Joe Harris</a><br>
+    <span class="item-detail">Fall 2019 Course Assistant</span></li>
 </ul>
-<p>
-</p><hr>
-<h3> CV </h3></p><p>
-  <ul>
-    <li> <a href="BJFCV0126.pdf" target="_blank" rel="noopener noreferrer">CV</a> (last updated January 2026)
-  </ul>
-<p>
-</p><hr>
-<h3> Community </h3></p><p>
-  <ul>
-    <li> I am a <a href = "https://urop.mit.edu/" target="_blank" rel="noopener noreferrer"> UROP mentor</a>.
-    <li> I am a <a href = "https://math.mit.edu/research/highschool/primes/program/" target="_blank" rel="noopener noreferrer"> PRIMES mentor</a>.
-    <li> I am a <a href = "https://math.mit.edu/gummi/" target="_blank" rel="noopener noreferrer"> GUMMI mentor</a>.
-    <li> I am a tutor for <a href = "https://winthrop.harvard.edu/people/benjy-firester" target="_blank" rel="noopener noreferrer"> Winthrop house</a>.
-  </ul>
-<p></p>
-<hr>
 
+<!-- CV -->
+<h2>CV</h2>
+<ul class="item-list">
+  <li><a href="BJFCV0126.pdf" target="_blank" rel="noopener noreferrer">CV</a> (last updated January 2026)</li>
+</ul>
 
-<!--
-  <div id="name"> 
-    <center>
-      <h5>
-        <p><b><a href="https://www.hunterschools.org/page/high-school">HCHS '18</a></b></p>
-        <p><b><a href="https://college.harvard.edu/">Harvard '22</a></b></p>
-      </h5>
-     </center>
-  </div>
-  <div id="body">
-    <center>
-      <h4>
-        <a href="stopblight">Predictive Late Blight Model</a>
-        <br>
-      </h4>
-    </center>
-  </div>
--->
+<!-- Community -->
+<h2>Community</h2>
+<ul class="item-list">
+  <li>I am a <a href="https://urop.mit.edu/" target="_blank" rel="noopener noreferrer">UROP mentor</a>.</li>
+  <li>I am a <a href="https://math.mit.edu/research/highschool/primes/program/" target="_blank" rel="noopener noreferrer">PRIMES mentor</a>.</li>
+  <li>I am a <a href="https://math.mit.edu/gummi/" target="_blank" rel="noopener noreferrer">GUMMI mentor</a>.</li>
+  <li>I am a tutor for <a href="https://winthrop.harvard.edu/people/benjy-firester" target="_blank" rel="noopener noreferrer">Winthrop House</a>.</li>
+</ul>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var items = document.querySelectorAll('details.research-item');
+
+  // Ensure links in summaries navigate instead of toggling
+  document.querySelectorAll('details.research-item summary a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  });
+
+  function animateClose(detail, fast, callback) {
+    var content = detail.querySelector('.paper-abstract');
+    if (!content || !detail.open) { if (callback) callback(); return; }
+    // Set fast transition if accordion-closing
+    if (fast) {
+      content.style.transition = 'max-height 0.18s cubic-bezier(0.4, 0, 0.6, 1), opacity 0.14s ease';
+    }
+    content.style.maxHeight = content.scrollHeight + 'px';
+    content.style.opacity = '1';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        content.style.maxHeight = '0';
+        content.style.opacity = '0';
+      });
+    });
+    function onEnd(e) {
+      if (e.propertyName !== 'max-height') return;
+      content.removeEventListener('transitionend', onEnd);
+      detail.open = false;
+      content.style.removeProperty('max-height');
+      content.style.removeProperty('opacity');
+      content.style.removeProperty('transition');
+      if (callback) callback();
+    }
+    content.addEventListener('transitionend', onEnd);
+  }
+
+  function animateOpen(detail) {
+    var content = detail.querySelector('.paper-abstract');
+    if (!content) return;
+    // Ensure default transition is restored
+    content.style.removeProperty('transition');
+    detail.open = true;
+    content.style.maxHeight = '0';
+    content.style.opacity = '0';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.opacity = '1';
+      });
+    });
+    function onEnd(e) {
+      if (e.propertyName !== 'max-height') return;
+      content.removeEventListener('transitionend', onEnd);
+      content.style.maxHeight = 'none';
+    }
+    content.addEventListener('transitionend', onEnd);
+  }
+
+  // Show topbar name when scrolled past the main heading
+  var topbarName = document.querySelector('.topbar-name');
+  var mainName = document.querySelector('.header-info h1');
+  if (topbarName && mainName) {
+    window.addEventListener('scroll', function() {
+      var rect = mainName.getBoundingClientRect();
+      if (rect.bottom < 38) {
+        topbarName.classList.add('visible');
+      } else {
+        topbarName.classList.remove('visible');
+      }
+    });
+  }
+
+  items.forEach(function(detail) {
+    var summary = detail.querySelector('summary');
+    summary.addEventListener('click', function(e) {
+      if (e.target.closest('a')) return;
+      e.preventDefault();
+
+      if (detail.open) {
+        // Close normally
+        animateClose(detail, false);
+      } else {
+        // Check if another is open
+        var openItem = null;
+        items.forEach(function(other) {
+          if (other !== detail && other.open) openItem = other;
+        });
+        if (openItem) {
+          // Fast-close the other, then open this one
+          animateClose(openItem, true, function() {
+            animateOpen(detail);
+          });
+        } else {
+          animateOpen(detail);
+        }
+      }
+    });
+  });
+});
+</script>
 </body>
 </html>
