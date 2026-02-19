@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Benjy Firester</title>
+<meta name="description" content="Benjy Firester - Mathematics PhD student at MIT. Research in geometric analysis, minimal surfaces, optimal transport, and Monge-Ampère equations.">
+<meta property="og:title" content="Benjy Firester">
+<meta property="og:description" content="Mathematics PhD student at MIT. Research in geometric analysis, minimal surfaces, optimal transport, and Monge-Ampère equations.">
+<meta property="og:image" content="https://benjyjf.com/Stanford%20Talk%20High%20REs.jpeg">
+<meta property="og:url" content="https://benjyjf.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Benjy Firester">
+<meta name="twitter:description" content="Mathematics PhD student at MIT. Research in geometric analysis, minimal surfaces, and Monge-Ampère equations.">
+<meta name="twitter:image" content="https://benjyjf.com/Stanford%20Talk%20High%20REs.jpeg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <script>
 MathJax = {
   tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }
@@ -48,6 +62,31 @@ body {
 
 .topbar-name.visible {
   opacity: 1;
+}
+
+.topbar-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.topbar-nav.visible {
+  opacity: 1;
+}
+
+.topbar-nav a {
+  font-size: 0.82em;
+  color: #555;
+  text-decoration: none;
+  transition: color 0.15s;
+  letter-spacing: 0.2px;
+}
+
+.topbar-nav a:hover {
+  color: #1a365d;
+  text-decoration: none;
 }
 
 #homepage {
@@ -257,6 +296,13 @@ ul.item-list > li::before {
 <body>
 <div class="topbar">
   <span class="topbar-name">Benjy Firester</span>
+  <nav class="topbar-nav">
+    <a href="#research">Research</a>
+    <a href="#presentations">Presentations</a>
+    <a href="#teaching">Teaching</a>
+    <a href="#cv">CV</a>
+    <a href="#community">Community</a>
+  </nav>
 </div>
 <div id="homepage">
 
@@ -289,7 +335,7 @@ ul.item-list > li::before {
 </div>
 
 <!-- Research -->
-<h2>Research</h2>
+<h2 id="research">Research</h2>
 
 <details class="research-item">
   <summary>
@@ -397,7 +443,7 @@ ul.item-list > li::before {
 </ul>
 
 <!-- Presentations -->
-<h2>Presentations</h2>
+<h2 id="presentations">Presentations</h2>
 <ul class="item-list">
   <li>NYU Courant Geometric Analysis &amp; Topology Seminar<br>
     <span class="item-detail">[<a href="https://math.nyu.edu/dynamic/calendars/seminars/geometric-analysis-and-topology-seminar/4338/" target="_blank" rel="noopener noreferrer">December 5, 2025</a>]</span></li>
@@ -436,7 +482,7 @@ ul.item-list > li::before {
 </ul>
 
 <!-- Teaching -->
-<h2>Teaching</h2>
+<h2 id="teaching">Teaching</h2>
 <ul class="item-list">
   <li>Harvard Math 123: Algebra II (Rings, Fields, Galois theory) taught by <a href="https://people.math.harvard.edu/~ctm/" target="_blank" rel="noopener noreferrer">Curt McMullen</a><br>
     <span class="item-detail">Spring 2023 Course Assistant</span></li>
@@ -453,13 +499,13 @@ ul.item-list > li::before {
 </ul>
 
 <!-- CV -->
-<h2>CV</h2>
+<h2 id="cv">CV</h2>
 <ul class="item-list">
   <li><a href="BJFCV0126.pdf" target="_blank" rel="noopener noreferrer">CV</a> (last updated January 2026)</li>
 </ul>
 
 <!-- Community -->
-<h2>Community</h2>
+<h2 id="community">Community</h2>
 <ul class="item-list">
   <li>I am a <a href="https://urop.mit.edu/" target="_blank" rel="noopener noreferrer">UROP mentor</a>.</li>
   <li>I am a <a href="https://math.mit.edu/research/highschool/primes/program/" target="_blank" rel="noopener noreferrer">PRIMES mentor</a>.</li>
@@ -529,19 +575,34 @@ document.addEventListener('DOMContentLoaded', function() {
     content.addEventListener('transitionend', onEnd);
   }
 
-  // Show topbar name when scrolled past the main heading
+  // Show topbar name and nav when scrolled past the main heading
   var topbarName = document.querySelector('.topbar-name');
+  var topbarNav = document.querySelector('.topbar-nav');
   var mainName = document.querySelector('.header-info h1');
   if (topbarName && mainName) {
     window.addEventListener('scroll', function() {
       var rect = mainName.getBoundingClientRect();
       if (rect.bottom < 38) {
         topbarName.classList.add('visible');
+        topbarNav.classList.add('visible');
       } else {
         topbarName.classList.remove('visible');
+        topbarNav.classList.remove('visible');
       }
     });
   }
+
+  // Smooth scroll for nav links, offset for topbar
+  document.querySelectorAll('.topbar-nav a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        var top = target.getBoundingClientRect().top + window.pageYOffset - 52;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    });
+  });
 
   items.forEach(function(detail) {
     var summary = detail.querySelector('summary');
